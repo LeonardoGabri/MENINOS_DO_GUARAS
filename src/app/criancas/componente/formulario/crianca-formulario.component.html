@@ -1,0 +1,90 @@
+<po-modal
+  #modalFormularioCrianca
+  p-size="xl"
+  p-title="Nova Criança"
+  [p-primary-action]="acao"
+  >
+  <form [formGroup]="formulario">
+    <div class="po-row">
+      <po-input
+      class="po-md-6"
+      p-label="Nome"
+      formControlName="nome"
+      p-clean="true"
+      p-required="true"
+      ></po-input>
+
+      <po-input
+      class="po-md-6"
+      p-label="Apelido"
+      formControlName="apelido"
+      p-clean="true"
+      ></po-input>
+    </div>
+
+    <div class="po-row">
+      <po-datepicker
+      class="po-md-6"
+      p-label="Data de Nascimento"
+      formControlName="dataNascimento"
+      p-format="dd/mm/yyyy"
+      p-clean="true"
+      p-required="true"
+      ></po-datepicker>
+    </div>
+
+    <div class="po-row">
+      <po-input
+      class="po-md-6"
+      p-label="Responsável"
+      formControlName="responsavel"
+      p-clean="true"
+      p-required="true"
+      ></po-input>
+
+      <po-input
+      class="po-md-6"
+      p-label="Telefone"
+      formControlName="telefone"
+      p-mask="9?9999-9999"
+      p-clean="true"
+      ></po-input>
+    </div>
+
+    <div class="po-row">
+      <po-combo
+      class="po-md-6"
+      p-label="Categoria"
+      formControlName="categoria"
+      [p-options]="categorias"
+      [p-clean]="true"
+      ></po-combo>
+
+      <po-combo
+      class="po-md-3"
+      p-label="Posição primária"
+      formControlName="posicao"
+      [p-options]="posicoes"
+      [p-clean]="true"
+      ></po-combo>
+
+      <po-combo
+      class="po-md-3"
+      p-label="Posição secundária"
+      formControlName="posicaoSecundaria"
+      [p-options]="posicoes"
+      [p-clean]="true"
+      ></po-combo>
+    </div>
+
+    <div class="po-row">
+      <po-input
+      class="po-md-6"
+      p-label="Número do calçado"
+      formControlName="numeroTenis"
+      p-clean="true"
+      p-mask="99"
+      ></po-input>
+    </div>
+  </form>
+</po-modal>

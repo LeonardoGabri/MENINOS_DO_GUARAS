@@ -1,0 +1,18 @@
+<po-page-list
+  style="width: 100%"
+  [p-title]= "tituloPagina"
+  [p-actions]="acoes"
+>
+  <po-container>
+    <po-table
+      [p-columns]="colunasMonitoramento"
+      [p-items]="itemsAnemometro"
+      [p-actions]="acaoPortas"
+      [p-actions-right]="true"
+    ></po-table>
+  </po-container>
+</po-page-list>
+
+<app-crianca-formulario
+  #modalCriancaFormulario
+></app-crianca-formulario>
