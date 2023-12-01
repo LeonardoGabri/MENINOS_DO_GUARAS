@@ -20,7 +20,7 @@ export class CriancaApiService{
     return this.http.put(`http://${this.pathApi}/crianca/${id}`, crianca).pipe(take(1))
   }
 
-  deletarRegistroCrianca(id: string){
+  deletarRegistroCrianca(id?: string){
     return this.http.delete(`http://${this.pathApi}/crianca/${id}`).pipe(take(1))
   }
 

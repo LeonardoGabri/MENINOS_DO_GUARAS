@@ -22,17 +22,21 @@ export class CriancaListaComponent implements OnInit{
     {
       label: 'Cadastrar Criança',
       action: this.novaCrianca.bind(this)
+    },
+    {
+      label: 'Atualizar',
+      action: this.listarRegistrosCrianca.bind(this)
     }
   ]
 
   public readonly acaoPortas: PoTableAction[] = [
     {
       label: 'Editar',
-      // action: this.acaoFecharPortasPoDialog.bind(this)
+      action: this.detalharCrianca.bind(this)
     },
     {
       label: 'Deletar',
-      // action: this.acaoFecharPortasPoDialog.bind(this)
+      action: this.excluirCrianca.bind(this)
     }
   ]
 
@@ -54,6 +58,24 @@ export class CriancaListaComponent implements OnInit{
     this.criancaApiService.listarCriancas().subscribe({
       next: (response: any) => {
           this.itemsAnemometro = response
+      }
+    })
+  }
+
+  detalharCrianca(crianca: CriancaModel){
+    this.modalCriancaFormulario.abrirModalCrianca(crianca)
+  }
+
+  excluirCrianca(crianca: CriancaModel){
+    this.criancaApiService.deletarRegistroCrianca(crianca?.id).subscribe({
+      next: (response: any) => {
+        this.poNotification.warning(response)
+      },
+      error: ({error}) => {
+        this.poNotification.error('ERRO DE SISTEMA')
+      },
+      complete: () => {
+        this.listarRegistrosCrianca()
       }
     })
   }

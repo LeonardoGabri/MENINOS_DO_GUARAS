@@ -1,10 +1,11 @@
 import { CriancaComponent } from './../../crianca.component';
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, EventEmitter, OnInit, Output, ViewChild } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
-import { CriancaModel } from '../../modelo/crianca.model';
+import { CriancaModel, INITIAL_CRIANCA } from '../../modelo/crianca.model';
 import { PoComboOption, PoModalAction, PoModalComponent, PoNotificationService } from '@po-ui/ng-components';
 import { CriancaApiService } from '../../service/crianca.service';
 import * as moment from 'moment';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-crianca-formulario',
@@ -12,6 +13,9 @@ import * as moment from 'moment';
 })
 export class CriancaFormularioComponent implements OnInit{
   formulario!: FormGroup
+  somenteLeitura= false
+
+  @Output() eventoAtualizarLista = new EventEmitter(true)
 
   @ViewChild('modalFormularioCrianca', {static: true})
   modalFormularioCrianca!: PoModalComponent
@@ -22,35 +26,31 @@ export class CriancaFormularioComponent implements OnInit{
       value: 'GOLEIRO'
     },
     {
-      label: 'Zagueiro',
-      value: 'ZAGUEIRO'
+      label: 'Pivô',
+      value: 'PIVO'
     },
     {
-      label: 'Meia',
-      value: 'MEIA'
+      label: 'Ala',
+      value: 'ALA'
     },
     {
-      label: 'Atacante',
-      value: 'ATACANTE'
+      label: 'Fixo',
+      value: 'FIXO'
     }
   ]
 
   public categorias: PoComboOption[] = [
     {
-      label: 'Sub-11',
-      value: 'SUB_11'
+      label: 'Sub-6 ao Sub-10',
+      value: '6_10'
     },
     {
-      label: 'Sub-12',
-      value: 'SUB_12'
+      label: 'Sub-11 ao Sub-14',
+      value: '11_14'
     },
     {
-      label: 'Sub-14',
-      value: 'SUB_14'
-    },
-    {
-      label: 'Sub-16',
-      value: 'SUB_16'
+      label: 'Sub-15 e Sub-16',
+      value: '15_16'
     },
   ]
 
@@ -64,7 +64,8 @@ export class CriancaFormularioComponent implements OnInit{
   constructor(
     private formBuilder: FormBuilder,
     private criancaApiService: CriancaApiService,
-    private poNotification: PoNotificationService
+    private poNotification: PoNotificationService,
+    private datePipe: DatePipe
   ){}
 
   ngOnInit(): void {
@@ -82,20 +83,35 @@ export class CriancaFormularioComponent implements OnInit{
   criarFormulario(novoFormulario?: CriancaModel){
     this.formulario = this.formBuilder.group({
       id:[novoFormulario?.id],
+      numero_registro: [novoFormulario?.numero_registro],
       nome: [novoFormulario?.nome],
       apelido: [novoFormulario?.apelido],
       responsavel: [novoFormulario?.responsavel],
       telefone: [novoFormulario?.telefone],
-      dataNascimento: [novoFormulario?.dataNascimento],
-      numeroTenis: [novoFormulario?.numeroTenis],
+      data_nascimento: [novoFormulario?.data_nascimento],
+      numero_tenis: [novoFormulario?.numero_tenis],
       posicao: [novoFormulario?.posicao],
-      posicaoSecundaria: [novoFormulario?.posicaoSecundaria],
-      categoria: [novoFormulario?.categoria]
+      posicao_secundaria: [novoFormulario?.posicao_secundaria],
+      categoria: [novoFormulario?.categoria],
+      tamanho_camiseta: [novoFormulario?.tamanho_camiseta],
+      tamanho_calca:[novoFormulario?.tamanho_calca],
     })
   }
 
-  abrirModalCrianca(){
+  abrirModalCrianca(crianca?: CriancaModel){
     this.modalFormularioCrianca.open()
+
+    if(crianca){
+      this.somenteLeitura = true
+      let dataFormatada = this.datePipe.transform(crianca.data_nascimento, 'dd/MM/yyyy')
+      console.log('DATA FORMATADA', moment(crianca.data_nascimento).format('DD/MM/YYYY'))
+      this.formulario.patchValue(crianca)
+      this.formulario.get('data_nascimento')?.setValue(moment(crianca.data_nascimento).format('DD/MM/YYYY'))
+    }else{
+      this.somenteLeitura = false
+      this.formulario.patchValue(INITIAL_CRIANCA())
+    }
+
   }
 
   fecharModalCrianca(){
@@ -104,20 +120,24 @@ export class CriancaFormularioComponent implements OnInit{
   }
 
   salvar() {
+    let id = this.formulario.get('id')?.value
     const formData = this.formulario.getRawValue();
-    let data = this.formulario.get('dataNascimento')?.value
+    let data = this.formulario.get('data_nascimento')?.value
     const dataFormatada = moment(data).format('DD/MM/YYYY')
-    formData.dataNascimento = dataFormatada;
-    console.log('FORM', formData)
+    formData.data_nascimento = dataFormatada;
+    console.log('TIPO', typeof this.formulario.get('data_nascimento')?.value)
+
+    let metodo = id ? this.criancaApiService.editarCrianca(id, formData) : this.criancaApiService.inserirCrianca(formData)
     if (!this.formulario.errors) {
-      this.criancaApiService.inserirCrianca(formData).subscribe({
-        next: (response: any) => {
-          this.poNotification.success('Salvo com sucesso')
-        },
-        complete: () => {
-          this.fecharModalCrianca();
-        }
-      });
+        metodo.subscribe({
+          next: (response: any) => {
+            this.poNotification.success('Salvo com sucesso')
+          },
+          complete: () => {
+            this.fecharModalCrianca();
+            this.eventoAtualizarLista.emit(true)
+          }
+        });
     }
   }
 }

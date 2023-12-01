@@ -12,6 +12,7 @@
       formControlName="nome"
       p-clean="true"
       p-required="true"
+      [p-readonly]="somenteLeitura.toString()"
       ></po-input>
 
       <po-input
@@ -24,13 +25,24 @@
 
     <div class="po-row">
       <po-datepicker
+      *ngIf="!somenteLeitura"
       class="po-md-6"
       p-label="Data de Nascimento"
-      formControlName="dataNascimento"
+      formControlName="data_nascimento"
       p-format="dd/mm/yyyy"
       p-clean="true"
       p-required="true"
       ></po-datepicker>
+
+      <po-input
+      *ngIf="somenteLeitura"
+      class="po-md-6"
+      p-label="Data de Nascimento"
+      formControlName="data_nascimento"
+      p-clean="true"
+      [p-readonly]="somenteLeitura.toString()"
+      p-required="true"
+      ></po-input>
     </div>
 
     <div class="po-row">
@@ -71,19 +83,35 @@
       <po-combo
       class="po-md-3"
       p-label="Posição secundária"
-      formControlName="posicaoSecundaria"
+      formControlName="posicao_secundaria"
       [p-options]="posicoes"
       [p-clean]="true"
       ></po-combo>
     </div>
 
+    <po-divider p-label="Tamanho de Roupas"></po-divider>
+
     <div class="po-row">
       <po-input
-      class="po-md-6"
+      class="po-md-4"
       p-label="Número do calçado"
-      formControlName="numeroTenis"
+      formControlName="numero_tenis"
       p-clean="true"
       p-mask="99"
+      ></po-input>
+
+      <po-input
+        class="po-md-4"
+        formControlName="tamanho_camiseta"
+        p-label="Tamanho de Camiseta"
+        p-clean="true"
+      ></po-input>
+
+      <po-input
+        class="po-md-4"
+        formControlName="tamanho_calca"
+        p-label="Tamanho de Calça"
+        p-clean="true"
       ></po-input>
     </div>
   </form>

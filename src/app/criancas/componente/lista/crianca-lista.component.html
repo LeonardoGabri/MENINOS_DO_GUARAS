@@ -9,10 +9,29 @@
       [p-items]="itemsAnemometro"
       [p-actions]="acaoPortas"
       [p-actions-right]="true"
-    ></po-table>
+    >
+      <ng-template p-table-cell-template let-column="column" let-row="row">
+        <div *ngIf="column.property === 'categoria'">
+          <span *ngIf="row.categoria == '6_10'" class="po-color-10 po-table-column-label">6 e 10</span>
+          <span *ngIf="row.categoria == '11_14'" class="po-color-08 po-table-column-label">11 e 14</span>
+          <span *ngIf="row.categoria == '15_16'" class="po-color-01 po-table-column-label">15 e 16</span>
+        </div>
+
+        <div *ngIf="column.property === 'posicao'">
+          <span *ngIf="row.posicao == 'GOLEIRO'" class="po-color-10 po-table-column-label">GOLEIRO</span>
+          <span *ngIf="row.posicao == 'PIVO'" class="po-color-08 po-table-column-label">PIVÔ</span>
+          <span *ngIf="row.posicao == 'ALA'" class="po-color-01 po-table-column-label">ALA</span>
+          <span *ngIf="row.posicao == 'FIXO'" class="po-color-02 po-table-column-label">FIXO</span>
+
+        </div>
+
+      </ng-template>
+    </po-table>
   </po-container>
 </po-page-list>
 
+
 <app-crianca-formulario
   #modalCriancaFormulario
+  (eventoAtualizarLista)="this.listarRegistrosCrianca()"
 ></app-crianca-formulario>
