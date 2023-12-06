@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  webapp:
+  meninos-guaras-app:
     image: node:latest
     working_dir: /app
     volumes:
