@@ -2,3 +2,6 @@
   for = "/*"
     [headers.values]
       Access-Control-Allow-Origin = "*"
+
+[build.environment]
+URL_API_MG = https://meninosdoguarasapi-production.up.railway.app
