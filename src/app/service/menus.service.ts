@@ -23,7 +23,6 @@ const navegaInicio = {
 const navegaMenusArray = [
 navegaInicio,
 navegaCriancas,
-navegaPadrinhos,
 ] as PoMenuItem[]
 
 export {
