@@ -13,22 +13,22 @@ export class CriancaApiService{
   constructor(protected http: HttpClient){}
 
   inserirCrianca(crianca: CriancaModel){
-    return this.http.post(`http://${this.pathApi}/crianca`, crianca).pipe(take(1))
+    return this.http.post(`${this.pathApi}/crianca`, crianca).pipe(take(1))
   }
 
   editarCrianca(id: string, crianca: CriancaModel){
-    return this.http.put(`http://${this.pathApi}/crianca/${id}`, crianca).pipe(take(1))
+    return this.http.put(`${this.pathApi}/crianca/${id}`, crianca).pipe(take(1))
   }
 
   deletarRegistroCrianca(id?: string){
-    return this.http.delete(`http://${this.pathApi}/crianca/${id}`).pipe(take(1))
+    return this.http.delete(`${this.pathApi}/crianca/${id}`).pipe(take(1))
   }
 
   listarCriancas(){
-    return this.http.get(`http://${this.pathApi}/crianca`).pipe(take(1))
+    return this.http.get(`${this.pathApi}/crianca`).pipe(take(1))
   }
 
   detalharCrianca(id?: string){
-    return this.http.get(`http://${this.pathApi}/crianca/${id}`).pipe(take(1))
+    return this.http.get(`${this.pathApi}/crianca/${id}`).pipe(take(1))
   }
 }

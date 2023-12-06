@@ -13,7 +13,7 @@ export class CriancaListaComponent implements OnInit{
 
   colunasMonitoramento = colunasCriancas
   tituloPagina = navegaCriancas.label
-  itemsAnemometro!: CriancaModel[]
+  itemsCriancas!: CriancaModel[]
 
   @ViewChild('modalCriancaFormulario', {static: true})
   modalCriancaFormulario!: CriancaFormularioComponent
@@ -57,7 +57,7 @@ export class CriancaListaComponent implements OnInit{
   listarRegistrosCrianca(){
     this.criancaApiService.listarCriancas().subscribe({
       next: (response: any) => {
-          this.itemsAnemometro = response
+          this.itemsCriancas = response
       }
     })
   }
