@@ -103,8 +103,6 @@ export class CriancaFormularioComponent implements OnInit{
 
     if(crianca){
       this.somenteLeitura = true
-      let dataFormatada = this.datePipe.transform(crianca.data_nascimento, 'dd/MM/yyyy')
-      console.log('DATA FORMATADA', moment(crianca.data_nascimento).format('DD/MM/YYYY'))
       this.formulario.patchValue(crianca)
       this.formulario.get('data_nascimento')?.setValue(moment(crianca.data_nascimento).format('DD/MM/YYYY'))
     }else{
@@ -120,12 +118,12 @@ export class CriancaFormularioComponent implements OnInit{
   }
 
   salvar() {
+    this.acao.disabled = true
     let id = this.formulario.get('id')?.value
     const formData = this.formulario.getRawValue();
     let data = this.formulario.get('data_nascimento')?.value
-    const dataFormatada = moment(data).format('DD/MM/YYYY')
-    formData.data_nascimento = dataFormatada;
-    console.log('TIPO', typeof this.formulario.get('data_nascimento')?.value)
+    let data_formatada = moment(data).format('DD/MM/yyyy')
+    formData.data_nascimento = data_formatada;
 
     let metodo = id ? this.criancaApiService.editarCrianca(id, formData) : this.criancaApiService.inserirCrianca(formData)
     if (!this.formulario.errors) {
@@ -136,6 +134,7 @@ export class CriancaFormularioComponent implements OnInit{
           complete: () => {
             this.fecharModalCrianca();
             this.eventoAtualizarLista.emit(true)
+            this.acao.disabled = false
           }
         });
     }
