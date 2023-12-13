@@ -83,12 +83,13 @@ export class CriancaFormularioComponent implements OnInit{
   criarFormulario(novoFormulario?: CriancaModel){
     this.formulario = this.formBuilder.group({
       id:[novoFormulario?.id],
-      numero_registro: [novoFormulario?.numero_registro],
+      registro: [novoFormulario?.registro],
       nome: [novoFormulario?.nome],
       apelido: [novoFormulario?.apelido],
       responsavel: [novoFormulario?.responsavel],
       telefone: [novoFormulario?.telefone],
       data_nascimento: [novoFormulario?.data_nascimento],
+      data_nascimento_corrigida: [novoFormulario?.data_nascimento_corrigida],
       numero_tenis: [novoFormulario?.numero_tenis],
       posicao: [novoFormulario?.posicao],
       posicao_secundaria: [novoFormulario?.posicao_secundaria],
@@ -104,7 +105,7 @@ export class CriancaFormularioComponent implements OnInit{
     if(crianca){
       this.somenteLeitura = true
       this.formulario.patchValue(crianca)
-      this.formulario.get('data_nascimento')?.setValue(moment(crianca.data_nascimento).format('DD/MM/YYYY'))
+      this.formulario.get('data_nascimento')?.setValue(moment(crianca.data_nascimento).format('YYYY-MM-DD'))
     }else{
       this.somenteLeitura = false
       this.formulario.patchValue(INITIAL_CRIANCA())
@@ -120,6 +121,7 @@ export class CriancaFormularioComponent implements OnInit{
   salvar() {
     this.acao.disabled = true
     let id = this.formulario.get('id')?.value
+
     const formData = this.formulario.getRawValue();
     let data = this.formulario.get('data_nascimento')?.value
     let data_formatada = moment(data).format('DD/MM/yyyy')

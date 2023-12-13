@@ -1,7 +1,7 @@
 
 export interface CriancaModel {
   id?:string;
-  numero_registro?: string;
+  registro?: string;
   nome?: string;
   apelido?: string;
   responsavel?: string;
@@ -11,6 +11,7 @@ export interface CriancaModel {
   posicao_secundaria?: string;
   categoria?: string;
   data_nascimento?: Date
+  data_nascimento_corrigida?: String
   tamanho_camiseta?: string;
   tamanho_calca?: string;
 }
@@ -18,7 +19,7 @@ export interface CriancaModel {
 export function INITIAL_CRIANCA(): CriancaModel {
   return {
     id: undefined,
-    numero_registro: undefined,
+    registro: undefined,
     nome: undefined,
     apelido: undefined,
     responsavel: undefined,

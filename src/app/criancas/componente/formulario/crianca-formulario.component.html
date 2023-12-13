@@ -25,7 +25,7 @@
 
     <div class="po-row">
       <po-datepicker
-      *ngIf="!somenteLeitura"
+      *ngIf="somenteLeitura"
       class="po-md-6"
       p-label="Data de Nascimento"
       formControlName="data_nascimento"
@@ -33,16 +33,6 @@
       p-clean="true"
       p-required="true"
       ></po-datepicker>
-
-      <po-input
-      *ngIf="somenteLeitura"
-      class="po-md-6"
-      p-label="Data de Nascimento"
-      formControlName="data_nascimento"
-      p-clean="true"
-      [p-readonly]="somenteLeitura.toString()"
-      p-required="true"
-      ></po-input>
     </div>
 
     <div class="po-row">
